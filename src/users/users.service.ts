@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,7 +24,9 @@ export class UsersService {
   }
 
   findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
+    let test = this.usersRepository.findOne(id);
+    
+    return test;
   }
 
   async remove(id: string): Promise<void> {
