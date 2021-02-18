@@ -10,7 +10,7 @@ import { UsersController } from './users/users.controller'
     UsersModule,
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)

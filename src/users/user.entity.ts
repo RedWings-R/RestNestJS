@@ -5,9 +5,9 @@ export class utilisateur {
   @PrimaryGeneratedColumn()
   idutilisateur: number;
 
-  @Column()
+  @Column("varchar", { length: 45 })
   prenom: string;
 
-  @Column()
+  @Column("varchar", { length: 45 })
   nom: string;
 }
