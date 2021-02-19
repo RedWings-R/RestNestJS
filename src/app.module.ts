@@ -5,6 +5,7 @@ import { UsersModule } from './utilisateur/utilisateurs.module';
 import { UsersController } from './utilisateur/utilisateurs.controller'
 import { ClientModule } from './client/clients.module';
 import { ContactModule } from './contact/contacts.module';
+import { ParametrageModule } from './parametrage/parametrage.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ContactModule } from './contact/contacts.module';
     UsersModule,
     ClientModule,
     ContactModule,
+    ParametrageModule,
   ],
 })
 export class AppModule {
