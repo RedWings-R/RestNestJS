@@ -28,6 +28,7 @@
     "dotenv": "^8.2.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "pg-protocol": "^1.4.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
