@@ -27,8 +27,12 @@ export class ContactService {
     });
   }
 
-  async findAll(): Promise<Contact[]> {
-    let contacts_ = this.contactsRepository.find();
+  async findAll(Relation?: number): Promise<Contact[]> {
+    let relation:string[] = [];
+    if(Relation == 1){
+      relation[0] = "clients";
+    }
+    let contacts_ = this.contactsRepository.find({relations: relation});
     if(contacts_ === undefined){
       throw new HttpException("Aucune contact récupéré",HttpStatus.NOT_FOUND);
     }else{
@@ -36,8 +40,12 @@ export class ContactService {
     }
   }
 
-  async findOne(id: number): Promise<Contact> {
-    let contact_ = await this.contactsRepository.findOne(id, {relations: ["clients"]});
+  async findOne(id: number,Relation?: number): Promise<Contact> {
+    let relation:string[] = [];
+    if(Relation == 1){
+      relation[0] = "clients";
+    }
+    let contact_ = await this.contactsRepository.findOne(id, {relations: relation});
     if(contact_ === undefined){
       throw new HttpException("Contact inconnue",HttpStatus.NOT_FOUND);
     }else{

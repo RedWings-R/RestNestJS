@@ -4,6 +4,7 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { Contact } from './entity/contact.entity';
 import { ContactService } from './contacts.service';
 import { UpdateContactDto } from './dto/update-contact.dto';
+import { Query } from '@nestjs/common';
 
 @Controller('contacts')
 export class ContactController {
@@ -15,13 +16,13 @@ export class ContactController {
   }
 
   @Get()
-  async findAll(): Promise<Contact[]> {
-    return this.contactService.findAll();
+  async findAll(@Query('relation') relation?:number): Promise<Contact[]> {
+    return this.contactService.findAll(relation);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Contact> {
-    return this.contactService.findOne(id);
+  async findOne(@Param('id') id: number,@Query('relation') relation?:number): Promise<Contact> {
+    return this.contactService.findOne(id,relation);
   }
 
   @Put(':id')

@@ -1,3 +1,4 @@
+import { Affaire } from "src/affaire/entities/affaire.entity";
 import { Contact } from "src/contact/entity/contact.entity";
 
 export class CreateClientDto {
@@ -6,4 +7,5 @@ export class CreateClientDto {
     addresse: string;
     telephone: string;
     contacts: Contact[];
+    affaires: Affaire[];
   }

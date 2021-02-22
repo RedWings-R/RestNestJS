@@ -6,6 +6,11 @@ import { UsersController } from './utilisateur/utilisateurs.controller'
 import { ClientModule } from './client/clients.module';
 import { ContactModule } from './contact/contacts.module';
 import { ParametrageModule } from './parametrage/parametrage.module';
+import { RappelModule } from './rappel/rappel.module';
+import { RendezVousModule } from './rendez-vous/rendez-vous.module';
+import { TacheModule } from './tache/tache.module';
+import { AffaireModule } from './affaire/affaire.module';
+import { AvancementModule } from './avancement/avancement.module';
 
 @Module({
   imports: [
@@ -14,6 +19,11 @@ import { ParametrageModule } from './parametrage/parametrage.module';
     ClientModule,
     ContactModule,
     ParametrageModule,
+    RappelModule,
+    RendezVousModule,
+    TacheModule,
+    AffaireModule,
+    AvancementModule,
   ],
 })
 export class AppModule {

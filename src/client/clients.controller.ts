@@ -1,4 +1,4 @@
-import { Body, Catch, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './entity/client.entity';
@@ -15,13 +15,13 @@ export class ClientController {
   }
 
   @Get()
-  async findAll(): Promise<Client[]> {
-    return this.clientService.findAll();
+  async findAll(@Query('relation') relation?:number): Promise<Client[]> {
+    return this.clientService.findAll(relation);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Client> {
-    return this.clientService.findOne(id);
+  async findOne(@Param('id',) id: number,@Query('relation') relation?:number): Promise<Client> {
+    return this.clientService.findOne(id,relation);
   }
 
   @Put(':id')

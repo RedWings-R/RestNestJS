@@ -17,13 +17,19 @@ export class ClientService {
     clientNew.addresse = createClientDto.addresse;
     clientNew.telephone = createClientDto.telephone;
     clientNew.contacts = createClientDto.contacts;
+    clientNew.affaires = createClientDto.affaires;
     return this.clientsRepository.save(clientNew).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
   }
 
-  async findAll(): Promise<Client[]> {
-    let client_ = this.clientsRepository.find({ relations: ["contacts"] });
+  async findAll(Relation?: number): Promise<Client[]> {
+    let relation:string[] = [];
+    if(Relation == 1){
+      relation[0] = "contacts";
+      relation[1] = "affaires";
+    }
+    let client_ = this.clientsRepository.find({ relations: relation });
     if(client_ === undefined){
       throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
     }else{
@@ -31,8 +37,12 @@ export class ClientService {
     }
   }
 
-  async findOne(id: number): Promise<Client> {
-    let client_ = await this.clientsRepository.findOne(id,{relations:["contacts"]});
+  async findOne(id: number,Relation?: number): Promise<Client> {
+    let relation:string[] = [];
+    if(Relation == 1){
+      relation[0] = "contacts";
+    }
+    let client_ = await this.clientsRepository.findOne(id,{relations:relation});
     if(client_ === undefined){
       throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
     }else{
@@ -43,13 +53,16 @@ export class ClientService {
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client>{
     let client_ = await this.clientsRepository.findOne(id);
     if(client_ === undefined){
-      throw new HttpException("Contact inconnue",HttpStatus.NOT_FOUND);
+      throw new HttpException("Client inconnue",HttpStatus.NOT_FOUND);
     }
+
     client_.code_client = updateClientDto.code_client;
     client_.nom_client = updateClientDto.nom_client;
     client_.addresse = updateClientDto.addresse;
     client_.telephone = updateClientDto.telephone;
     client_.contacts = updateClientDto.contacts;
+    client_.affaires = updateClientDto.affaires;
+
     return this.clientsRepository.save(client_).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
