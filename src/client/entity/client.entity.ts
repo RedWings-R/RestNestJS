@@ -20,13 +20,16 @@ export class Client {
   @Column("varchar", { length: 45 })
   telephone: string;
 
+  @Column({ type: 'boolean', default: false})
+  prospect: boolean;
+
   @ManyToMany(() => Contact, contact => contact.clients)
   @JoinTable()
   contacts: Contact[];
 
-  @ManyToOne(() => Utilisateur, utilisateur => utilisateur.clients)
-  utilisateurs: Utilisateur;
+  @ManyToOne(() => Utilisateur, utilisateur => utilisateur.clients, { cascade: true })
+  utilisateur: Utilisateur;
 
-  @OneToMany(() => Affaire, affaire => affaire.clients)
+  @OneToMany(() => Affaire, affaire => affaire.client)
   affaires: Affaire[];
 }

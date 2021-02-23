@@ -6,6 +6,7 @@ export class CreateClientDto {
     nom_client: string;
     addresse: string;
     telephone: string;
+    prospect: boolean;
     contacts: Contact[];
     affaires: Affaire[];
   }

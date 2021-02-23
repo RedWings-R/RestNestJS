@@ -38,6 +38,7 @@ export class UsersService {
     if(Relation == 1){
       relation[0] = "taches";
       relation[1] = "clients";
+      relation[2] = "rendezVous";
     }
     let utilisateur_ = await this.usersRepository.find({ relations: relation });
     if(utilisateur_ === undefined){
@@ -52,6 +53,7 @@ export class UsersService {
     if(Relation == 1){
       relation[0] = "taches";
       relation[1] = "clients";
+      relation[2] = "rendezVous";
     }
     let test = this.usersRepository.findOne(id,{relations: relation});
     return test;

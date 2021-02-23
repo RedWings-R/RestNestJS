@@ -11,6 +11,7 @@ import { RendezVousModule } from './rendez-vous/rendez-vous.module';
 import { TacheModule } from './tache/tache.module';
 import { AffaireModule } from './affaire/affaire.module';
 import { AvancementModule } from './avancement/avancement.module';
+import { AppelModule } from './appel/appel.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AvancementModule } from './avancement/avancement.module';
     TacheModule,
     AffaireModule,
     AvancementModule,
+    AppelModule,
   ],
 })
 export class AppModule {

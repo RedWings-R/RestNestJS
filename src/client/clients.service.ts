@@ -41,6 +41,7 @@ export class ClientService {
     let relation:string[] = [];
     if(Relation == 1){
       relation[0] = "contacts";
+      relation[1] = "affaires";
     }
     let client_ = await this.clientsRepository.findOne(id,{relations:relation});
     if(client_ === undefined){
@@ -60,6 +61,7 @@ export class ClientService {
     client_.nom_client = updateClientDto.nom_client;
     client_.addresse = updateClientDto.addresse;
     client_.telephone = updateClientDto.telephone;
+    client_.prospect = updateClientDto.prospect;
     client_.contacts = updateClientDto.contacts;
     client_.affaires = updateClientDto.affaires;
 
