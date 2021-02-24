@@ -5,6 +5,4 @@ export class CreateUserDto {
     prenom: string;
     nom: string;
     identifiant: string;
-    clients: Client[];
-    taches: Tache[];
   }

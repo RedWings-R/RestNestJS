@@ -17,8 +17,10 @@ export class UsersService {
     }
     utilisateur_.nom = updateUtilisateurDto.nom;
     utilisateur_.prenom = updateUtilisateurDto.prenom;
+    utilisateur_.identifiant = updateUtilisateurDto.identifiant;
     utilisateur_.clients = updateUtilisateurDto.clients;
     utilisateur_.taches = updateUtilisateurDto.taches;
+    utilisateur_.rendezVous = updateUtilisateurDto.rendezVous;
     return this.usersRepository.save(utilisateur_).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
@@ -28,8 +30,7 @@ export class UsersService {
     const user = new Utilisateur();
     user.nom = createUserDto.nom;
     user.prenom = createUserDto.prenom;
-    user.clients = createUserDto.clients;
-    user.taches = createUserDto.taches;
+    user.identifiant = createUserDto.identifiant;
     return this.usersRepository.save(user);
   }
 
@@ -39,9 +40,10 @@ export class UsersService {
       relation[0] = "taches";
       relation[1] = "clients";
       relation[2] = "rendezVous";
+      relation[3] = "clients.contacts"
     }
     let utilisateur_ = await this.usersRepository.find({ relations: relation });
-    if(utilisateur_ === undefined){
+    if(utilisateur_.length === 0){
       throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
     }else{
       return utilisateur_;
@@ -54,9 +56,14 @@ export class UsersService {
       relation[0] = "taches";
       relation[1] = "clients";
       relation[2] = "rendezVous";
+      relation[3] = "clients.contacts";
     }
-    let test = this.usersRepository.findOne(id,{relations: relation});
-    return test;
+    let utilisateur_ = await this.usersRepository.findOne(id,{relations: relation});
+    if(utilisateur_ == undefined){
+      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return utilisateur_;
+    }
   }
 
   async remove(id: number,res: Response): Promise<void> {

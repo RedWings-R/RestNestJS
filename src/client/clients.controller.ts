@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './entity/client.entity';
@@ -16,12 +16,23 @@ export class ClientController {
 
   @Get()
   async findAll(@Query('relation') relation?:number): Promise<Client[]> {
-    return this.clientService.findAll(relation);
+    return this.clientService.findAll(relation).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });;
+  }
+
+  @Get('/Utilisateur/:id')
+  async findAllClientsByUtilisateur(@Param('id',) id: number,@Query('relation') relation?:number): Promise<Client[]> {
+    return this.clientService.findAllClientsByUtilisateur(id,relation).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });;
   }
 
   @Get(':id')
   async findOne(@Param('id',) id: number,@Query('relation') relation?:number): Promise<Client> {
-    return this.clientService.findOne(id,relation);
+    return this.clientService.findOne(id,relation).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });;
   }
 
   @Put(':id')

@@ -16,6 +16,9 @@ export class Utilisateur {
   @Column("varchar", { length: 45 })
   nom: string;
 
+  @Column("varchar", { length: 45 })
+  identifiant: string;
+
   @OneToMany(() => Tache, tache => tache.utilisateur)
   taches: Tache[];
 

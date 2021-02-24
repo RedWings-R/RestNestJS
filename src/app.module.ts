@@ -12,6 +12,14 @@ import { TacheModule } from './tache/tache.module';
 import { AffaireModule } from './affaire/affaire.module';
 import { AvancementModule } from './avancement/avancement.module';
 import { AppelModule } from './appel/appel.module';
+import { RendezVousController } from './rendez-vous/rendez-vous.controller';
+import { ContactController } from './contact/contacts.controller';
+import { ClientController } from './client/clients.controller';
+import { ParametrageController } from './parametrage/parametrage.controller';
+import { RappelController } from './rappel/rappel.controller';
+import { TacheController } from './tache/tache.controller';
+import { AffaireController } from './affaire/affaire.controller';
+import { AppelController } from './appel/appel.controller';
 
 @Module({
   imports: [
@@ -32,6 +40,16 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(UsersController);
+      .forRoutes(
+        UsersController, 
+        RendezVousController, 
+        ContactController, 
+        ClientController, 
+        ParametrageController, 
+        RappelController, 
+        TacheController, 
+        AffaireController, 
+        AppelController
+      );
   }
 }

@@ -32,8 +32,8 @@ export class ContactService {
     if(Relation == 1){
       relation[0] = "clients";
     }
-    let contacts_ = this.contactsRepository.find({relations: relation});
-    if(contacts_ === undefined){
+    let contacts_ = await this.contactsRepository.find({relations: relation});
+    if(contacts_.length === 0){
       throw new HttpException("Aucune contact récupéré",HttpStatus.NOT_FOUND);
     }else{
       return contacts_;
@@ -60,6 +60,9 @@ export class ContactService {
     }
     contact_.code_contact = updateContactDto.code_contact;
     contact_.nom_contact = updateContactDto.nom_contact;
+    contact_.addresse = updateContactDto.addresse;
+    contact_.clients = updateContactDto.clients;
+    contact_.telephone = updateContactDto.telephone;
     return this.contactsRepository.save(contact_).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });

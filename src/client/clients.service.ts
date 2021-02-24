@@ -29,11 +29,25 @@ export class ClientService {
       relation[0] = "contacts";
       relation[1] = "affaires";
     }
-    let client_ = this.clientsRepository.find({ relations: relation });
-    if(client_ === undefined){
+    let clients_ = await this.clientsRepository.find({ relations: relation });
+    if(clients_.length === 0){
       throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
     }else{
-      return client_;
+      return clients_;
+    }
+  }
+
+  async findAllClientsByUtilisateur(id: number,Relation?: number): Promise<Client[]> {
+    let relation:string[] = [];
+    if(Relation == 1){
+      relation[0] = "contacts";
+      relation[1] = "affaires";
+    }
+    let clients_ = await this.clientsRepository.find({ relations: relation, where: {utilisateur: id} });
+    if(clients_.length === 0){
+      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return clients_;
     }
   }
 
@@ -64,6 +78,7 @@ export class ClientService {
     client_.prospect = updateClientDto.prospect;
     client_.contacts = updateClientDto.contacts;
     client_.affaires = updateClientDto.affaires;
+    client_.utilisateur = updateClientDto.utilisateur;
 
     return this.clientsRepository.save(client_).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
