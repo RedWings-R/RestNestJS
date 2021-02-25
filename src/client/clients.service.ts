@@ -1,15 +1,18 @@
 import { HttpException, HttpStatus ,Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Response } from 'express';
-import { Repository } from 'typeorm';
+import { Repository,getConnection } from 'typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './entity/client.entity';
 import { UpdateClientDto } from './dto/update-contact.dto';
+import { RelationClientDto } from './dto/relation-client.dto';
 
 @Injectable()
 export class ClientService {
   constructor(@InjectRepository(Client) private readonly clientsRepository: Repository<Client>,){}
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async create(createClientDto: CreateClientDto): Promise<Client> {
     const clientNew = new Client();
     clientNew.nom_client = createClientDto.nom_client;
@@ -22,49 +25,50 @@ export class ClientService {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
-  async findAll(Relation?: number): Promise<Client[]> {
-    let relation:string[] = [];
-    if(Relation == 1){
-      relation[0] = "contacts";
-      relation[1] = "affaires";
-    }
-    let clients_ = await this.clientsRepository.find({ relations: relation });
-    if(clients_.length === 0){
-      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
-    }else{
-      return clients_;
-    }
-  }
-
-  async findAllClientsByUtilisateur(id: number,Relation?: number): Promise<Client[]> {
-    let relation:string[] = [];
-    if(Relation == 1){
-      relation[0] = "contacts";
-      relation[1] = "affaires";
-    }
-    let clients_ = await this.clientsRepository.find({ relations: relation, where: {utilisateur: id} });
-    if(clients_.length === 0){
-      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
-    }else{
-      return clients_;
-    }
-  }
-
-  async findOne(id: number,Relation?: number): Promise<Client> {
-    let relation:string[] = [];
-    if(Relation == 1){
-      relation[0] = "contacts";
-      relation[1] = "affaires";
-    }
-    let client_ = await this.clientsRepository.findOne(id,{relations:relation});
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findClientWithRelationByID(id: number,relationClientDto: RelationClientDto): Promise<Client> {
+    let client_ = await this.clientsRepository.findOne(id,{relations:relationClientDto.relations});
     if(client_ === undefined){
       throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
     }else{
       return client_;
     }
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAll(): Promise<Client[]> {
+    let clients_ = await this.clientsRepository.find();
+    if(clients_.length === 0){
+      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return clients_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findOne(id: number): Promise<Client> {
+    let client_ = await this.clientsRepository.findOne(id);
+    if(client_ === undefined){
+      throw new HttpException("Aucun client récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return client_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client>{
     let client_ = await this.clientsRepository.findOne(id);
     if(client_ === undefined){
@@ -76,16 +80,39 @@ export class ClientService {
     client_.addresse = updateClientDto.addresse;
     client_.telephone = updateClientDto.telephone;
     client_.prospect = updateClientDto.prospect;
-    client_.contacts = updateClientDto.contacts;
-    client_.affaires = updateClientDto.affaires;
     client_.utilisateur = updateClientDto.utilisateur;
 
-    return this.clientsRepository.save(client_).catch((err) => {
+    client_ = await this.clientsRepository.save(client_).then(()=>{
+      return this.clientsRepository.findOne(id).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      });
+    }).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
+
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
+    if(updateClientDto.affaires != undefined){
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Client, "affaires")
+      .of(client_)
+      .add(updateClientDto.affaires).catch(() => {});
+    }
+    if(updateClientDto.contacts != undefined){
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Client, "contacts")
+      .of(client_)
+      .add(updateClientDto.contacts).catch(() => {});
+    }
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
+     return client_;
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
-
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async remove(id: number,res: Response): Promise<void> {
     this.clientsRepository.delete(id).then((rslt) => {
       console.log(rslt.affected)
@@ -99,4 +126,6 @@ export class ClientService {
       }
     });
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 }

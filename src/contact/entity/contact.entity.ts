@@ -12,6 +12,9 @@ export class Contact {
   nom_contact: string;
 
   @Column("varchar", { length: 45 })
+  prenom_contact: string;
+
+  @Column("varchar", { length: 45 })
   addresse: string;
 
   @Column("varchar", { length: 45 })

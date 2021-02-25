@@ -1,11 +1,12 @@
 import { HttpStatus ,Injectable,HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Response } from 'express';
-import { QueryFailedError, Repository } from 'typeorm';
+import { getConnection, QueryFailedError, Repository } from 'typeorm';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto'
 import { Contact } from './entity/contact.entity';
 import { DatabaseError } from 'pg-protocol';
+import { RelationContactDto } from './dto/relation-contact.dto';
 
 export const isQueryFailedError = (err: unknown): err is QueryFailedError & DatabaseError =>
   err instanceof QueryFailedError;
@@ -15,6 +16,8 @@ export const isQueryFailedError = (err: unknown): err is QueryFailedError & Data
 export class ContactService {
   constructor(@InjectRepository(Contact) private readonly contactsRepository: Repository<Contact>,){}
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async create(createContactDto: CreateContactDto): Promise<Contact> {
     const contactNew = new Contact();
     contactNew.nom_contact = createContactDto.nom_contact;
@@ -22,37 +25,55 @@ export class ContactService {
     contactNew.addresse = createContactDto.addresse;
     contactNew.telephone = createContactDto.telephone;
     contactNew.clients = createContactDto.clients;
+    contactNew.prenom_contact = createContactDto.prenom_contact;
     return this.contactsRepository.save(contactNew).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
-  async findAll(Relation?: number): Promise<Contact[]> {
-    let relation:string[] = [];
-    if(Relation == 1){
-      relation[0] = "clients";
-    }
-    let contacts_ = await this.contactsRepository.find({relations: relation});
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAll(): Promise<Contact[]> {
+    let contacts_ = await this.contactsRepository.find();
     if(contacts_.length === 0){
       throw new HttpException("Aucune contact récupéré",HttpStatus.NOT_FOUND);
     }else{
       return contacts_;
     }
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
-  async findOne(id: number,Relation?: number): Promise<Contact> {
-    let relation:string[] = [];
-    if(Relation == 1){
-      relation[0] = "clients";
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async recupClientWithRelationByID(id: number,relationContactDto: RelationContactDto): Promise<Contact> {
+    let contact_ = await this.contactsRepository.findOne(id,{relations:relationContactDto.relations});
+    if(contact_ === undefined){
+      throw new HttpException("Aucun contact récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return contact_;
     }
-    let contact_ = await this.contactsRepository.findOne(id, {relations: relation});
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findOne(id: number): Promise<Contact> {
+    let contact_ = await this.contactsRepository.findOne(id);
     if(contact_ === undefined){
       throw new HttpException("Contact inconnue",HttpStatus.NOT_FOUND);
     }else{
       return contact_;
     }
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async update(id: number, updateContactDto: UpdateContactDto): Promise<Contact>{
     let contact_ = await this.contactsRepository.findOne(id);
     if(contact_ === undefined){
@@ -61,13 +82,36 @@ export class ContactService {
     contact_.code_contact = updateContactDto.code_contact;
     contact_.nom_contact = updateContactDto.nom_contact;
     contact_.addresse = updateContactDto.addresse;
-    contact_.clients = updateContactDto.clients;
+    contact_.prenom_contact = updateContactDto.prenom_contact;
     contact_.telephone = updateContactDto.telephone;
-    return this.contactsRepository.save(contact_).catch((err) => {
+
+    contact_ = await this.contactsRepository.save(contact_).then(()=>{
+      return this.contactsRepository.findOne(id).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      });
+    }).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
     });
-  }
 
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
+    if(updateContactDto.clients != undefined){
+      await getConnection()
+      .createQueryBuilder()
+      .relation(Contact, "clients")
+      .of(contact_)
+      .add(updateContactDto.clients).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      });
+    }
+    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
+
+    return contact_;
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
   async remove(id: number,res: Response): Promise<void> {
     this.contactsRepository.delete(id).then((rslt) => {
       console.log(rslt.affected)
@@ -76,9 +120,11 @@ export class ContactService {
       }else{
         res.status(404).send({
           "Message":"Echec suppression",
-           "Error":"Utilisateur inconnue"
+           "Error":"Contact inconnue"
           });
       }
     });
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
 }
