@@ -1,0 +1,111 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Response } from 'express';
+import { Repository } from 'typeorm';
+import { CreateRappelDto } from './dto/create-rappel.dto';
+import { RelationRappelDto } from './dto/relation-rappel.dto';
+import { UpdateRappelDto } from './dto/update-rappel.dto';
+import { Rappel } from './entities/rappel.entity';
+
+@Injectable()
+export class RappelService {
+  constructor(@InjectRepository(Rappel) private readonly rappelRepository: Repository<Rappel>,){}
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  create(createRappelDto: CreateRappelDto): Promise<Rappel> {
+    const rappelNew = new Rappel();
+
+    rappelNew.date_heure = createRappelDto.date_heure;
+    rappelNew.description = createRappelDto.description;
+    rappelNew.telephone = createRappelDto.telephone;
+    rappelNew.utilisateur = createRappelDto.utilisateur;
+
+    return this.rappelRepository.save(rappelNew).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findRappelWithRelationByID(id: number,relationRappelDto: RelationRappelDto): Promise<Rappel> {
+    let rappel_ = await this.rappelRepository.findOne(id,{relations:relationRappelDto.relations});
+    if(rappel_ === undefined){
+      throw new HttpException("Aucun rappel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return rappel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAll():Promise<Rappel[]> {
+    let rappel_ = await this.rappelRepository.find();
+    if(rappel_.length === 0){
+      throw new HttpException("Aucun rappel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return rappel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findOne(id: number):Promise<Rappel> {
+    let rappel_ = await this.rappelRepository.findOne(id);
+    if(rappel_ === undefined){
+      throw new HttpException("Aucune rappel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return rappel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async update(id: number, updateRappelDto: UpdateRappelDto): Promise<Rappel>{
+    let rappel_ = await this.rappelRepository.findOne(id);
+    if(rappel_ === undefined){
+      throw new HttpException("Rappel inconnue",HttpStatus.NOT_FOUND);
+    }
+    rappel_.description = updateRappelDto.description;
+    rappel_.date_heure = updateRappelDto.date_heure;
+    rappel_.telephone = updateRappelDto.telephone;
+    rappel_.utilisateur = updateRappelDto.utilisateur;
+    rappel_ = await this.rappelRepository.save(rappel_).then(()=>{
+      return this.rappelRepository.findOne(id).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      });
+    }).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+
+    return rappel_;
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async remove(id: number,res: Response): Promise<void> {
+    this.rappelRepository.delete(id).then((rslt) => {
+      console.log(rslt.affected)
+      if(rslt.affected){
+        res.status(HttpStatus.OK).send({"Message":"Suppression réussi"});
+      }else{
+        res.status(HttpStatus.NOT_FOUND).send({
+          "Message":"Echec suppression",
+           "Error":"Rappel inconnue"
+          });
+      }
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+}

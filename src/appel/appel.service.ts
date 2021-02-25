@@ -1,0 +1,117 @@
+import { HttpStatus } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Response } from 'express';
+import { Repository } from 'typeorm';
+import { CreateAppelDto } from './dto/create-appel.dto';
+import { RelationAppelDto } from './dto/relation-appel.dto';
+import { UpdateAppelDto } from './dto/update-appel.dto';
+import { Appel } from './entities/appel.entity';
+
+@Injectable()
+export class AppelService {
+
+  constructor(@InjectRepository(Appel) private readonly appelReposiory: Repository<Appel>,){}
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  create(createAppelDto: CreateAppelDto):Promise<Appel> {
+    const appelNew = new Appel();
+
+    appelNew.date_heure_debut = createAppelDto.date_heure_debut;
+    appelNew.date_heure_fin = createAppelDto.date_heure_fin;
+    appelNew.telephone = createAppelDto.telephone;
+    appelNew.description = createAppelDto.description;
+    appelNew.utilisateur = createAppelDto.utilisateur;
+
+    return this.appelReposiory.save(appelNew).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAppelWithRelationByID(id: number,relationAppelDto: RelationAppelDto): Promise<Appel> {
+    let appel_ = await this.appelReposiory.findOne(id,{relations:relationAppelDto.relations});
+    if(appel_ === undefined){
+      throw new HttpException("Aucun appel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return appel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAll(): Promise<Appel[]> {
+    let appel_ = await this.appelReposiory.find();
+    if(appel_.length === 0){
+      throw new HttpException("Aucun appel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return appel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findOne(id: number): Promise<Appel> {
+    let appel_ = await this.appelReposiory.findOne(id);
+    if(appel_ === undefined){
+      throw new HttpException("Aucun appel récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return appel_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async update(id: number, updateAppelDto: UpdateAppelDto): Promise<Appel>{
+    let appel_ = await this.appelReposiory.findOne(id);
+    if(appel_ === undefined){
+      throw new HttpException("Appel inconnue",HttpStatus.NOT_FOUND);
+    }
+
+    appel_.date_heure_debut = updateAppelDto.date_heure_debut;
+    appel_.date_heure_fin = updateAppelDto.date_heure_fin;
+    appel_.telephone = updateAppelDto.telephone;
+    appel_.description = updateAppelDto.description;
+    appel_.utilisateur = updateAppelDto.utilisateur;
+
+    appel_ = await this.appelReposiory.save(appel_).then(()=>{
+      return this.appelReposiory.findOne(id).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+    }).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+
+    return appel_;
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async remove(id: number,res: Response): Promise<void> {
+    this.appelReposiory.delete(id).then((rslt) => {
+      console.log(rslt.affected)
+      if(rslt.affected){
+        res.status(HttpStatus.OK).send({"Message":"Suppression réussi"});
+      }else{
+        res.status(404).send({
+          "Message":"Echec suppression",
+           "Error":"Appel inconnue"
+          });
+      }
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+}

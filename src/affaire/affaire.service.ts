@@ -1,0 +1,113 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Response } from 'express';
+import { Repository } from 'typeorm';
+import { CreateAffaireDto } from './dto/create-affaire.dto';
+import { RelationAffaireDto } from './dto/relation-affaire.dto';
+import { UpdateAffaireDto } from './dto/update-affaire.dto';
+import { Affaire } from './entities/affaire.entity';
+
+@Injectable()
+export class AffaireService {
+  constructor(@InjectRepository(Affaire) private readonly affaireReposiory: Repository<Affaire>,){}
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  create(createAffaireDto: CreateAffaireDto):Promise<Affaire> {
+    const affaireNew = new Affaire();
+    
+    affaireNew.date_creation = createAffaireDto.date_creation;
+    affaireNew.date_fin = createAffaireDto.date_fin;
+    affaireNew.client = createAffaireDto.client;
+    affaireNew.montant = createAffaireDto.montant;
+
+    return this.affaireReposiory.save(affaireNew).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async recupClientWithRelationByID(id: number,relationAffaireDto: RelationAffaireDto): Promise<Affaire> {
+    let affaire_ = await this.affaireReposiory.findOne(id,{relations:relationAffaireDto.relations});
+    if(affaire_ === undefined){
+      throw new HttpException("Aucune affaire récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return affaire_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findAll(): Promise<Affaire[]> {
+    let affaire_ = await this.affaireReposiory.find();
+    if(affaire_.length === 0){
+      throw new HttpException("Aucune affaire récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return affaire_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async findOne(id: number,): Promise<Affaire> {
+    let affaire_ = await this.affaireReposiory.findOne(id);
+    if(affaire_ === undefined){
+      throw new HttpException("Aucune affaire récupéré",HttpStatus.NOT_FOUND);
+    }else{
+      return affaire_;
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async update(id: number, updateAffaireDto: UpdateAffaireDto): Promise<Affaire>{
+    let affaire_ = await this.affaireReposiory.findOne(id);
+    if(affaire_ === undefined){
+      throw new HttpException("Affaire inconnue",HttpStatus.NOT_FOUND);
+    }
+
+    affaire_.date_creation = updateAffaireDto.date_creation;
+    affaire_.date_fin = updateAffaireDto.date_fin;
+    affaire_.client = updateAffaireDto.client;
+    affaire_.montant = updateAffaireDto.montant;
+
+    affaire_ = await this.affaireReposiory.save(affaire_).then(()=>{
+      return this.affaireReposiory.findOne(id).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      });
+    }).catch((err) => {
+      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+    });
+
+    return affaire_;
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  async remove(id: number,res: Response): Promise<void> {
+    this.affaireReposiory.delete(id).then((rslt) => {
+      console.log(rslt.affected)
+      if(rslt.affected){
+        res.status(HttpStatus.OK).send({"Message":"Suppression réussi"});
+      }else{
+        res.status(404).send({
+          "Message":"Echec suppression",
+           "Error":"Affaire inconnue"
+          });
+      }
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////
+}
