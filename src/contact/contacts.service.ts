@@ -27,7 +27,7 @@ export class ContactService {
     contactNew.clients = createContactDto.clients;
     contactNew.prenom_contact = createContactDto.prenom_contact;
     return this.contactsRepository.save(contactNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,10 +87,10 @@ export class ContactService {
 
     contact_ = await this.contactsRepository.save(contact_).then(()=>{
       return this.contactsRepository.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
@@ -99,8 +99,8 @@ export class ContactService {
       .createQueryBuilder()
       .relation(Contact, "clients")
       .of(contact_)
-      .add(updateContactDto.clients).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      .addAndRemove(updateContactDto.clients,updateContactDto.clients).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//

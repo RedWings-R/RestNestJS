@@ -25,7 +25,7 @@ export class AppelService {
     appelNew.utilisateur = createAppelDto.utilisateur;
 
     return this.appelReposiory.save(appelNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,10 +86,10 @@ export class AppelService {
 
     appel_ = await this.appelReposiory.save(appel_).then(()=>{
       return this.appelReposiory.findOne(id).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     return appel_;

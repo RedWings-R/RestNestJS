@@ -22,7 +22,7 @@ export class AffaireService {
     affaireNew.montant = createAffaireDto.montant;
 
     return this.affaireReposiory.save(affaireNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +82,10 @@ export class AffaireService {
 
     affaire_ = await this.affaireReposiory.save(affaire_).then(()=>{
       return this.affaireReposiory.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     return affaire_;

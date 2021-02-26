@@ -23,7 +23,7 @@ export class RendezVousService {
     rdvNew.utilisateur = createRendezVousDto.utilisateur;
 
     return this.rendezVousRepository.save(rdvNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +82,10 @@ export class RendezVousService {
 
     rdv_ = await this.rendezVousRepository.save(rdv_).then(()=>{
       return this.rendezVousRepository.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     return rdv_;

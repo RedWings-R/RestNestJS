@@ -22,7 +22,7 @@ export class AvancementService {
     avancementNew.date = createAvancementDto.date;
 
     return this.avancementReposiory.save(avancementNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +82,10 @@ export class AvancementService {
 
     avancement_ = await this.avancementReposiory.save(avancement_).then(()=>{
       return this.avancementReposiory.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     return avancement_;

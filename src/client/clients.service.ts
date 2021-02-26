@@ -22,7 +22,7 @@ export class ClientService {
     clientNew.contacts = createClientDto.contacts;
     clientNew.affaires = createClientDto.affaires;
     return this.clientsRepository.save(clientNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,10 +84,10 @@ export class ClientService {
 
     client_ = await this.clientsRepository.save(client_).then(()=>{
       return this.clientsRepository.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
@@ -96,14 +96,18 @@ export class ClientService {
       .createQueryBuilder()
       .relation(Client, "affaires")
       .of(client_)
-      .add(updateClientDto.affaires).catch(() => {});
+      .add(updateClientDto.affaires).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
+      });
     }
     if(updateClientDto.contacts != undefined){
       await getConnection()
       .createQueryBuilder()
       .relation(Client, "contacts")
       .of(client_)
-      .add(updateClientDto.contacts).catch(() => {});
+      .addAndRemove(updateClientDto.contacts,updateClientDto.contacts).catch((err) => {
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
+      });
     }
     //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''//
      return client_;
@@ -115,7 +119,6 @@ export class ClientService {
   /////////////////////////////////////////////////////////////////////////////////////////////
   async remove(id: number,res: Response): Promise<void> {
     this.clientsRepository.delete(id).then((rslt) => {
-      console.log(rslt.affected)
       if(rslt.affected){
         res.status(HttpStatus.OK).send({"Message":"Suppression réussi"});
       }else{

@@ -14,7 +14,9 @@ export class AvancementController {
 
   @Post()
   create(@Body() createAvancementDto: CreateAvancementDto): Promise<Avancement> {
-    return this.avancementService.create(createAvancementDto);
+    return this.avancementService.create(createAvancementDto).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });
   }
 
   @Post(":id/relation")
@@ -28,23 +30,27 @@ export class AvancementController {
   findAll(): Promise<Avancement[]> {
     return this.avancementService.findAll().catch((err) => {
       throw new HttpException(err,HttpStatus.UNAUTHORIZED);
-    });;
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: number): Promise<Avancement> {
     return this.avancementService.findOne(id).catch((err) => {
       throw new HttpException(err,HttpStatus.UNAUTHORIZED);
-    });;
+    });
   }
 
   @Put(':id')
   update(@Param('id') id: number, @Body() updateAvancementDto: UpdateAvancementDto): Promise<Avancement> {
-    return this.avancementService.update(id, updateAvancementDto);
+    return this.avancementService.update(id, updateAvancementDto).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: number,@Res() res: Response): Promise<void> {
-    return this.avancementService.remove(id,res);
+    return this.avancementService.remove(id,res).catch((err) => {
+      throw new HttpException(err,HttpStatus.UNAUTHORIZED);
+    });
   }
 }

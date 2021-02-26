@@ -21,7 +21,7 @@ export class TacheService {
     tacheNew.cloturer = createTacheDto.cloturer;
     tacheNew.utilisateur = createTacheDto.utilisateur;
     return this.tachesRepository.save(tacheNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////

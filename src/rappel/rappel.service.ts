@@ -22,7 +22,7 @@ export class RappelService {
     rappelNew.utilisateur = createRappelDto.utilisateur;
 
     return this.rappelRepository.save(rappelNew).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,10 +80,10 @@ export class RappelService {
     rappel_.utilisateur = updateRappelDto.utilisateur;
     rappel_ = await this.rappelRepository.save(rappel_).then(()=>{
       return this.rappelRepository.findOne(id).catch((err) => {
-        throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+        throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
       });
     }).catch((err) => {
-      throw new HttpException(err.sqlMessage,HttpStatus.NOT_FOUND);
+      throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
 
     return rappel_;

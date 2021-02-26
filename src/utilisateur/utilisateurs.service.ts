@@ -16,7 +16,7 @@ export class UsersService {
   async update(id: number, updateUtilisateurDto: UpdateUtilisateurDto): Promise<Utilisateur>{
     let utilisateur_ = await this.usersRepository.findOne(id);
     if(utilisateur_ == undefined){
-      throw new HttpException("Utilisateur inconnue",HttpStatus.NOT_FOUND);
+      throw new HttpException("Utilisateur inconnue",HttpStatus.UNAUTHORIZED);
     }
     utilisateur_.nom = updateUtilisateurDto.nom;
     utilisateur_.prenom = updateUtilisateurDto.prenom;
@@ -97,7 +97,7 @@ export class UsersService {
   async findAll(): Promise<Utilisateur[]> {
     let utilisateur_ = await this.usersRepository.find();
     if(utilisateur_.length === 0){
-      throw new HttpException("Aucun utilisateur récupéré",HttpStatus.NOT_FOUND);
+      throw new HttpException("Aucun utilisateur récupéré",HttpStatus.UNAUTHORIZED);
     }else{
       return utilisateur_;
     }
@@ -111,7 +111,7 @@ export class UsersService {
 
     let utilisateur_ = await this.usersRepository.findOne(id);
     if(utilisateur_ == undefined){
-      throw new HttpException("Aucun utilisateur récupéré",HttpStatus.NOT_FOUND);
+      throw new HttpException("Aucun utilisateur récupéré",HttpStatus.UNAUTHORIZED);
     }else{
       return utilisateur_;
     }
