@@ -22,6 +22,8 @@ export class ClientService {
     clientNew.telephone = createClientDto.telephone;
     clientNew.contacts = createClientDto.contacts;
     clientNew.affaires = createClientDto.affaires;
+    clientNew.prospect = createClientDto.prospect;
+    //save du nouveau clients et les données son validé grace au dto
     return this.clientsRepository.save(clientNew).catch((err) => {
       throw new HttpException(err.sqlMessage,HttpStatus.UNAUTHORIZED);
     });
