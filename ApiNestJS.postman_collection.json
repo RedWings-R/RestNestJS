@@ -1,0 +1,1563 @@
+{
+	"info": {
+		"_postman_id": "2a0c3527-5989-4dc1-9414-0a787e42d99c",
+		"name": "ApiNestJS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients"
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "clients_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code_client\":\"\",\r\n    \"nom_client\":\"\",\r\n    \"addresse\":\"\",\r\n    \"telephone\":\"\",\r\n    \"contacts\":[\r\n        {\r\n            \"idcontact\": 1\r\n        }\r\n    ],\r\n    \"utilisateur\":1,\r\n    \"affaires\":[\r\n    {\r\n        \"idaffaire\": 1\r\n    },\r\n    {\r\n        \"idaffaire\": 2\r\n    }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients",
+								"1"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "clients_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code_client\": \"\",\r\n    \"nom_client\": \"\",\r\n    \"addresse\": \"\",\r\n    \"telephone\": \"\",\r\n    \"prospect\": false,\r\n    \"contacts\": [\r\n        {\r\n            \"idcontact\": 1\r\n        },\r\n        {\r\n            \"idcontact\": 3\r\n        }\r\n    ],\r\n    \"utilisateur\":1,\r\n    \"affaires\": [\r\n        {\r\n            \"idaffaire\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "relations_Client_id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"relations\":[\"contacts\",\"utilisateur\",\"affaires\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients/1/relation",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients",
+								"1",
+								"relation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clients_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "clients_par_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/clients/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"clients",
+								"1"
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "contacts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts"
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "contacts_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code_contact\": \"Contact#11\",\r\n    \"nom_contact\": \"dupond\",\r\n    \"prenom_contact\":\"rené\",\r\n    \"addresse\": \"150 rue du four\",\r\n    \"telephone\": \"01-05-08-08-08\",\r\n    \"clients\": [\r\n        {\r\n            \"idclient\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts/11",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts",
+								"11"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "contacts_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code_contact\": \"Contact#11\",\r\n    \"nom_contact\": \"dupond\",\r\n    \"prenom_contact\":\"rené\",\r\n    \"addresse\": \"150 rue du four\",\r\n    \"telephone\": \"01-05-08-08-08\",\r\n    \"clients\": [\r\n        {\r\n            \"idclient\": 35\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "relations_Contact_id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"relations\":[\"clients\",\"clients.utilisateur\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts/1/relation",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts",
+								"1",
+								"relation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contacts_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "contacts_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/contacts/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"contacts",
+								"1"
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utilisateurs",
+			"item": [
+				{
+					"name": "utilisateurs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs"
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "utilisateurs_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenom\": \"\",\r\n    \"nom\": \"\",\r\n    \"identifiant\": \"\",\r\n    \"clients\": [\r\n        {\r\n            \"idclient\": 1\r\n        },\r\n        {\r\n            \"idclient\": 3\r\n        }\r\n    ],\r\n    \"rendezVous\": [\r\n        {\r\n            \"idrendez_vous\": 1\r\n        },\r\n        {\r\n            \"idrendez_vous\": 2\r\n        },\r\n        {\r\n            \"idrendez_vous\": 3\r\n        }\r\n    ],\r\n    \"rappels\": [\r\n        {\r\n            \"idrappel\": 1\r\n        }\r\n    ],\r\n    \"taches\": [\r\n        {\r\n            \"idtache\": 1\r\n        },\r\n        {\r\n            \"idtache\": 3\r\n        },\r\n        {\r\n            \"idtache\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs",
+								"1"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "utilisateurs_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenom\": \"\",\r\n    \"nom\": \"\",\r\n    \"identifiant\": \"\",\r\n    \"clients\": [\r\n        {\r\n            \"idclient\": 1\r\n        },\r\n        {\r\n            \"idclient\": 3\r\n        }\r\n    ],\r\n    \"rendezVous\": [\r\n        {\r\n            \"idrendez_vous\": 1\r\n        },\r\n        {\r\n            \"idrendez_vous\": 2\r\n        },\r\n        {\r\n            \"idrendez_vous\": 3\r\n        }\r\n    ],\r\n    \"rappels\": [\r\n        {\r\n            \"idrappel\": 1\r\n        }\r\n    ],\r\n    \"taches\": [\r\n        {\r\n            \"idtache\": 1\r\n        },\r\n        {\r\n            \"idtache\": 3\r\n        },\r\n        {\r\n            \"idtache\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "relations_utilisateur_id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"relations\":[\"clients\",\"clients.contacts\",\"rendezVous\",\"rappels\",\"taches\",\"appels\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs/1/relation",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs",
+								"1",
+								"relation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "utilisateurs_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "utilisateurs_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs",
+								"1"
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Taches",
+			"item": [
+				{
+					"name": "taches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/taches",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"taches"
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "taches_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"ceci est une description modifié\",\r\n    \"date_creation\": \"2019-02-22\",\r\n    \"cloturer\": true,\r\n    \"utilisateur\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/taches/3",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"taches",
+								"3"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "taches_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"ceci est une description\",\r\n    \"date_creation\": \"2021-02-22\",\r\n    \"cloturer\": false,\r\n    \"utilisateur\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/taches",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"taches"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "relations_utilisateur_id Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"relations\":[\"clients\",\"clients.contacts\",\"rendezVous\",\"rappels\",\"taches\",\"appels\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/utilisateurs/1/relation",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"utilisateurs",
+								"1",
+								"relation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "taches_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/taches/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"taches",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "taches_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/taches/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"taches",
+								"1"
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Affaire",
+			"item": [
+				{
+					"name": "affaire",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/affaire?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"affaire"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "affaires_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_creation\": \"2000-01-01 01:01:01\",\r\n    \"date_fin\": \"2001-01-01 01:01:01\",\r\n    \"montant\": 0,\r\n    \"clients\":[\r\n        {\r\n            \"idclient\":1\r\n        },\r\n           {\r\n            \"idclient\":2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/affaire/3",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"affaire",
+								"3"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "affaires_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_creation\": \"2000-01-01 01:01:01\",\r\n    \"date_fin\": \"2001-01-01 01:01:01\",\r\n    \"montant\": 0,\r\n    \"client\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/affaire",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"affaire"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "affaires_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/affaire/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"affaire",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "affaires_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/affaire/19?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"affaire",
+								"19"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avancement",
+			"item": [
+				{
+					"name": "avancement",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/avancement?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"avancement"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "avancements_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/avancement/3",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"avancement",
+								"3"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "avancements_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_creation\": \"2000-01-01 01:01:01\",\r\n    \"date_fin\": \"2001-01-01 01:01:01\",\r\n    \"montant\": 0,\r\n    \"clients\":[\r\n        {\r\n            \"idclient\":1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/avancement",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"avancement"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "avancements_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/avancement/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"avancement",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "avancements_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/avancement/1?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"avancement",
+								"1"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rappel",
+			"item": [
+				{
+					"name": "rappel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/rappel?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rappel"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "rappels_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rappel/3",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rappel",
+								"3"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "rappels_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Petite description\",\r\n    \"date_heure\": \"2001-01-01 01:01:01\",\r\n    \"telephone\": \"0215457869\",\r\n    \"utilisateur\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rappel",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rappel"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "rappels_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rappel/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rappel",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "rappels_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/rappel/1?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rappel",
+								"1"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rendez-vous",
+			"item": [
+				{
+					"name": "rendez-vous",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/rendez-vous?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rendez-vous"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "rendez-vous_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_heure_debut\": \"2021-02-24 12:01:01\",\r\n    \"date_heure_fin\": \"2021-02-24 19:01:01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rendez-vous/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rendez-vous",
+								"1"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "rendez-vous_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Petite description\",\r\n    \"date_heure\": \"2001-01-01 01:01:01\",\r\n    \"telephone\": \"0215457869\",\r\n    \"utilisateur\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rendez-vous",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rendez-vous"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "rendez-vous_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/rendez-vous/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rendez-vous",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "rendez-vous_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/rendez-vous/1?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"rendez-vous",
+								"1"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "appel",
+			"item": [
+				{
+					"name": "appel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/appel?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"appel"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "appels_modification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/appel/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"appel",
+								"1"
+							]
+						},
+						"description": "modification du client par son ID"
+					},
+					"response": []
+				},
+				{
+					"name": "appel_creation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_heure_debut\": \"2001-01-01 01:01:01\",\r\n    \"date_heure_fin\": \"2001-01-01 01:01:01\",\r\n    \"telephone\": \"0215457869\",\r\n    \"description\": \"Petite description\",\r\n    \"utilisateur\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/appel",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"appel"
+							]
+						},
+						"description": "créer un client"
+					},
+					"response": []
+				},
+				{
+					"name": "appels_supprimer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.250.48:7000/appel/1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"appel",
+								"1"
+							]
+						},
+						"description": "supprimer client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "appel_par_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.250.48:7000/appel/1?relation=1",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"250",
+								"48"
+							],
+							"port": "7000",
+							"path": [
+								"appel",
+								"1"
+							],
+							"query": [
+								{
+									"key": "relation",
+									"value": "1"
+								}
+							]
+						},
+						"description": "GetById"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
